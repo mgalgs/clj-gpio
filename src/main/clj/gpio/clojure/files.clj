@@ -14,7 +14,8 @@
           (when-let [events (.poll poller timeout)]
             (doseq [_ (filter #(=  context (.getData %)) events)]
               (on-change-fn))
-            (recur)))))
+            (recur))))
+    true)
 
   (impl/stop! [_]
     (.close poller)))
