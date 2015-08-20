@@ -1,7 +1,7 @@
 (ns mock-files
   (:require [clojure.java.io
              :refer [file delete-file]]
-            [gpio.core :refer [random-access]]))
+            [gpio.clojure.files :refer [random-access]]))
 
 (defn delete-recursively  [fname]
     (let [func (fn [func f] 
@@ -42,6 +42,5 @@
 
 (defn mock-file-fixture [f]
   (with-mock-files
-    (f)
-    ) 
+    (f)) 
   (delete-recursively "target/test-files"))
