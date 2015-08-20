@@ -1,14 +1,15 @@
 (ns gpio.core
-  (:require
-    #?@(:clj [[clojure.core.async :as a
-               :refer [go <! >!! put! chan sliding-buffer tap]]
-              [clojure.core.async.impl.protocols :as p]
-              [gpio.impl.protocols :as impl] 
-              [gpio.clojure.files :as f]]
-        :cljs [[cljs.core.async :as a :refer [<! put! chan sliding-buffer tap]]
-               [cljs.core.async.impl.protocols :as p]
-               [gpio.impl.protocols :as impl]
-               [gpio.cljs.files :as f :refer [spit]]]))
+  #?(:clj
+      (:require [clojure.core.async :as a
+                  :refer [go <! >!! put! chan sliding-buffer tap]]
+                [clojure.core.async.impl.protocols :as p]
+                [gpio.impl.protocols :as impl] 
+                [gpio.clojure.files :as f])
+     :cljs
+      (:require [cljs.core.async :as a :refer [<! put! chan sliding-buffer tap]]
+                [cljs.core.async.impl.protocols :as p]
+                [gpio.impl.protocols :as impl]
+                [gpio.cljs.files :as f :refer [spit]]))
   #?(:cljs (:require-macros [cljs.core.async :refer [go]])))
 
 (defn export! [port]
