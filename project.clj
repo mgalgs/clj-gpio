@@ -1,4 +1,4 @@
-(defproject clj-gpio "0.1.1-SNAPSHOT"
+(defproject clj-gpio "0.2.0-SNAPSHOT"
     :description "A lightweight Clojure library for Raspberry PI GPIO"
     :url "http://peterschwarz.github.io/clj-gpio"
     :license  {:name "Eclipse Public License"
@@ -7,7 +7,6 @@
     :source-paths      ["src/main/cljc" "src/main/clj"]
     :test-paths        ["src/test/clj"]
     :java-source-paths ["src/main/java"]
-    :javac-options     ["-target" "1.6" "-source" "1.6"]
 
     :plugins [[lein-cljsbuild "1.0.6"]]
 
