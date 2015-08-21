@@ -3,13 +3,11 @@
       (:require [clojure.core.async :as a
                   :refer [go <! >!! put! chan sliding-buffer tap]]
                 [clojure.core.async.impl.protocols :as p]
-                [gpio.impl.protocols :as impl] 
-                [gpio.clojure.files :as f])
+                [gpio.impl.files :as f])
      :cljs
       (:require [cljs.core.async :as a :refer [<! put! chan sliding-buffer tap]]
                 [cljs.core.async.impl.protocols :as p]
-                [gpio.impl.protocols :as impl]
-                [gpio.cljs.files :as f :refer [spit]]))
+                [gpio.impl.files :as f :refer [spit]]))
   #?(:cljs (:require-macros [cljs.core.async :refer [go]])))
 
 (defn export! [port]
@@ -196,7 +194,7 @@
   (close! [_]
     (a/close! write-ch)
     (a/close! read-ch)
-    (impl/stop! file-watcher)
+    (f/stop! file-watcher)
     (close! gpio-port)))
 
 (defn open-channel-port
@@ -223,6 +221,6 @@
             (write-value! gpio-port data)
             (recur))))
 
-    (impl/start! file-watcher #(put! read-ch (read-value gpio-port)))
+    (f/start! file-watcher #(put! read-ch (read-value gpio-port)))
 
     (EdgeGpioPort. port gpio-port file-watcher read-ch write-ch mult-ch create-channel)))

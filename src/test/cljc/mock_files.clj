@@ -1,7 +1,7 @@
 (ns mock-files
   (:require [clojure.java.io
              :refer [file delete-file]]
-            [gpio.clojure.files :refer [random-access]]))
+            [gpio.impl.files :refer [random-access]]))
 
 (defn delete-recursively  [fname]
     (let [func (fn [func f] 

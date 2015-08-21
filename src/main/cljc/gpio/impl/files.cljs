@@ -1,6 +1,5 @@
-(ns gpio.cljs.files                         
-    (:require  [cljs.nodejs :as nodejs]        
-               [gpio.impl.protocols :as impl]))
+(ns gpio.impl.files
+  (:require  [cljs.nodejs :as nodejs]))
 
 (def ^:private fs (nodejs/require "fs"))
 
@@ -9,14 +8,18 @@
 (defn spit [filename content]
   (.writeFileSync fs filename content))
 
+(defprotocol FileWatcher
+  (start! [this on-change-fn])
+  (stop! [this]))
+
 (defrecord Watcher [filename]
-  impl/FileWatcher
-  (impl/start! [this on-change-fn]
+  FileWatcher
+  (start! [this on-change-fn]
     (let [js-watcher (.watch fs filename on-change-fn)]
       (aset this "__watcher_impl" js-watcher)
       true))
 
-  (impl/stop! [this]
+  (stop! [this]
     (.close (aget this "__watcher_impl"))))
 
 (defn create-watcher [filename file context timeout]

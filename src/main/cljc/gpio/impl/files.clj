@@ -1,15 +1,18 @@
-(ns gpio.clojure.files
-  (:require [clojure.core.async :refer [go]]
-            [gpio.impl.protocols :as impl])
+(ns gpio.impl.files
+  (:require [clojure.core.async :refer [go]])
   (:import [java.io RandomAccessFile FileOutputStream PrintStream]
            [io.bicycle.epoll EventPolling EventPoller PollEvent]))
 
 (def ^:private POLLING_CONFIG
   (bit-or EventPolling/EPOLLIN EventPolling/EPOLLET EventPolling/EPOLLPRI))
 
+(defprotocol FileWatcher
+  (start! [this on-change-fn])
+  (stop! [this]))
+
 (defrecord Watcher [poller context timeout]
-  impl/FileWatcher
-  (impl/start! [_ on-change-fn]
+  FileWatcher
+  (start! [_ on-change-fn]
     (go (loop []
           (when-let [events (.poll poller timeout)]
             (doseq [_ (filter #(=  context (.getData %)) events)]
@@ -17,7 +20,7 @@
             (recur))))
     true)
 
-  (impl/stop! [_]
+  (stop! [_]
     (.close poller)))
 
 (defn create-watcher [filename file context timeout]
